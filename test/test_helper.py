@@ -1,19 +1,19 @@
-import os, pytest
+import os, pytest, asyncio
 
 os.environ['APP_ENV'] = 'test'
 
 from api import create_app, db
 from sqlalchemy import create_engine
 
+def aiotest(func):
+    _app = create_app('test')
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(func(_app))
+
 @pytest.yield_fixture
 def app():
     app = create_app('test')
     yield app
-
-@pytest.fixture
-def test_cli(loop, app, test_client):
-    return loop.run_until_complete(test_client(app))
-
 
 def reset_db():
     app = create_app("test")

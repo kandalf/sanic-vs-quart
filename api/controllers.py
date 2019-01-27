@@ -1,19 +1,19 @@
-from sanic.views import HTTPMethodView
-from sanic.response import json
+import json
+from quart.views import MethodView
+from quart import request
 from datetime import datetime
 from .models import Application
 from .helpers import app_to_dict, apps_to_dict
 from .validators import ApplicationValidator
 
-class Applications(HTTPMethodView):
-    async def get(self, request):
+class Applications(MethodView):
+    async def get(self):
         apps = await Application.query.gino.all()
 
-        return json(apps_to_dict(apps), status=200)
+        return json.dumps(apps_to_dict(apps))
 
-
-    async def post(self, request):
-        app_attributes = request.json
+    async def post(self):
+        app_attributes = await request.json
         now = datetime.utcnow()
         payload = {}
         status = 200
@@ -25,8 +25,8 @@ class Applications(HTTPMethodView):
             app = await Application.create(
                 name = attrs["name"],
                 env_name = attrs["env_name"],
-                env_file = attrs["env_file"],
-                deployment_script = attrs["deployment_script"],
+                env_file = attrs.get("env_file"),
+                deployment_script = attrs.get("deployment_script"),
                 created_at = now,
                 updated_at = now
             )
@@ -39,4 +39,4 @@ class Applications(HTTPMethodView):
             payload = { 'errors': validator.errors }
 
 
-        return json(payload, status = status)
+        return json.dumps(payload), status
