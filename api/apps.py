@@ -1,6 +1,6 @@
-from sanic import Blueprint
+from quart import Blueprint
 from api.controllers import Applications
 
-apps_routes = Blueprint('apps')
+apps_routes = Blueprint('apps', __name__)
 
-apps_routes.add_route(Applications.as_view(), "/apps")
+apps_routes.add_url_rule("/apps", view_func=Applications.as_view('home'))
