@@ -37,3 +37,12 @@ It's worth noting that both frameworks are under active development, so probably
 Even I'm feeling slightly leaned to Sanic, it's fair to say that both options are equivalent and my feeling is that deciding for one option or another for a given project might depend on matters of personal preference rather than on technical factors.
 
 This is my humble opinion and I would love to hear other opinions so feel free to discuss in the PR or to reach me out directly!
+
+### Installation of the app
+
+Just in case you want to run it locally, you should:
+
+* Clone this repo
+* Setup a virtual env with Python 3 (I've used `virtualenv` because I find it simpler that `pipenv`, but you can use your tool of preference)
+* Install dependencies with `pip install -f requirements.txt` (I recommend creating two different envs for each version so you can isolate the environment properly)
+* Run the app in dev mode `python main.py`
